@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:BarcodeCaptureSample"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             x:Class="BarcodeCaptureSample.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <custom:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+     <Grid ColumnDefinitions="0.45*,0.55*" RowDefinitions="0.5*,0.5*" BackgroundColor="LightBlue">
+        <StackLayout Grid.Column="0" BackgroundColor="LightCoral">
+            <Entry x:Name="txtBarcode" Text="{Binding Barcode}" Placeholder="Barcode" HorizontalOptions="FillAndExpand" Focused="txtBarcodeFocused"/>
+        </StackLayout>
+        <Grid BackgroundColor="LightSeaGreen" Grid.Column="1" IsVisible="{Binding IsEditBarcodeImgVisible,Converter={StaticResource InverseBoolConverter}}" >
+            
+            <custom:BarcodeView Opacity="0" x:Name="barcodeview"><!---->
+                <StackLayout>
+                    <zxing:ZXingBarcodeImageView  x:Name="QRCodeView" BarcodeFormat="CODE_93"
+                            HeightRequest="50" WidthRequest="800" BarcodeValue="{Binding RandomBarcodeNumber}"
+                            VerticalOptions="Center">
+                        <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                            <zxcm:EncodingOptions Width="800" Height="200"/>
+                        </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    </zxing:ZXingBarcodeImageView>
+                </StackLayout>
+            </custom:BarcodeView>
+            <Button x:Name="start_btn" Text="Generate Barcode" Clicked="GenerateBarcode"  VerticalOptions="Center">
+            </Button>
+        </Grid>
+        <Image Grid.Column="1" x:Name="imgCaptured"  IsVisible="{Binding IsEditBarcodeImgVisible}"
+               Source="{Binding BarcodeSource1}"></Image> 
+    </Grid>
+
+</ContentPage>
